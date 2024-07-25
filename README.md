@@ -12,11 +12,9 @@ To-Do list:
 
 ### Development Container
 
-This repository comes with a [.devcontainer.json](.devcontainer.json) configuration file that uses [fclad-ietf/ietf-id-devcontainer](https://github.com/fclad-ietf/ietf-id-devcontainer/pkgs/container/ietf-id-devcontainer).
+The repository comes with a [.devcontainer.json](.devcontainer.json) configuration file that uses [fclad-ietf/ietf-id-devcontainer](https://github.com/fclad-ietf/ietf-id-devcontainer/pkgs/container/ietf-id-devcontainer). This includes the [kramdown-rfc](https://github.com/cabo/kramdown-rfc) and [xml2rfc](https://github.com/ietf-tools/xml2rfc) binaries needed to generate the XML, plain text, and HTML versions of the ID from Markdown, as well as the tools to produce [iddiffs](https://author-tools.ietf.org/iddiff).
 
-The development container includes the [kramdown-rfc](https://github.com/cabo/kramdown-rfc) and [xml2rfc](https://github.com/ietf-tools/xml2rfc) binaries needed to generate the XML, plain text, and HTML versions of the ID from Markdown, as well as producing [iddiffs](https://author-tools.ietf.org/iddiff).
-
-For more information on development containers, see https://containers.dev/.
+To use the development container, just clone the repository, open the root folder in Visual Studio Code with the official [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed, and accept the prompt to "Reopen in Container". For other options, see the documentation at https://containers.dev/.
 
 
 ### Build
