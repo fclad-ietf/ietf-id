@@ -27,8 +27,7 @@ TXTFILE = $(DOCNAME).txt
 HTMLFILE= $(DOCNAME).html
 PREVFILE= $(PREVVER).txt
 
-.PHONY: all xml txt html diff diff-only tag bump git-isclean git-ismaster \
-        clean cleanall
+.PHONY: all xml txt html diff tag bump git-isclean git-ismaster clean cleanall
 
 all: txt
 
@@ -61,9 +60,6 @@ txt: $(DISTDIR)/$(TXTFILE)
 html: $(DISTDIR)/$(HTMLFILE)
 
 diff: $(PREVPATH)/$(PREVFILE) $(DISTDIR)/$(TXTFILE)
-	cd $(DISTDIR); $(RFCDIFF) $(PREVDIR)/$(PREVFILE) $(TXTFILE)
-
-diff-only: $(PREVPATH)/$(PREVFILE)
 	cd $(DISTDIR); $(RFCDIFF) $(PREVDIR)/$(PREVFILE) $(TXTFILE)
 
 tag: git-ismaster git-isclean
