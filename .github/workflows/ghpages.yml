@@ -1,4 +1,4 @@
-name: Build and push devcontainer image
+name: Build
 
 on:
   push:
