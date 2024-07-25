@@ -19,8 +19,7 @@ VERNUM  = $(lastword $(subst -, ,$(DOCNAME)))
 ifeq ($(VERNUM), 00)
 	PREVVER = $(PREVNAME)
 else
-	PREVVER = \
-		$(shell d=$(DOCNAME); v=$(VERNUM); echo $${d%-*}-`printf "%02d" "$$(($${v##0}-1))"`)
+	PREVVER = $(shell d=$(DOCNAME); v=$(VERNUM); echo $${d%-*}-`printf "%02d" "$$(($${v##0}-1))"`)
 endif
 
 XMLFILE = $(DOCNAME).xml
