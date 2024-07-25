@@ -12,8 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build
-        run: make txt html
+      - name: Build in devcontainer
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: make txt html
 
       - name: Save generated draft
         uses: actions/upload-artifact@v4
