@@ -1,31 +1,34 @@
 ---
-title: <Your Draft Title>
-abbrev:
-docname: draft-<yourname>-<wg>-<your-draft-name>-00
-date:
-category: std
-submissionType: IETF
-
+v: 3
+stand_alone: true
 ipr: trust200902
-area: General
-workgroup: <WG>
-keyword: Internet-Draft
-
-coding: us-ascii
 pi: [toc, sortrefs, symrefs]
 
-author:
+submissionType: IETF
+area: "Area" # FIXME
+wg: "Working Group" # FIXME
+cat: info # FIXME: change to `std` for standards track documents
+#date: # omit to let xml2rfc fill the current date or set to desired date
+
+title: Draft Title # FIXME
+#abbrev: # omit or set to abbreviated title
+docname: draft-author-wg-draft-name-00 # FIXME
+#keyword: # add as needed
+
+author: # repeat for any author
  -
-  ins: J. Doe
-  name: John Doe
-  organization: My Company
-  role: editor
-  email: jdoe@example.com
-  country: USA
+  #role: editor # uncomment if applicable
+  #ins: # set if automatic initials is incorrect
+  name: John Doe # FIXME
+  org: My Company # FIXME
+  email: jdoe@example.com # FIXME
+  country: USA # FIXME
 
-normative:
+#contributor: # add contributors below following same format as authors
 
-informative:
+normative: # add normative references below
+
+informative: # add informative references below
 ...
 
 --- abstract
@@ -37,3 +40,29 @@ Lorem ipsum...
 # Introduction
 
 Lorem ipsum...
+
+## Requirements Language
+
+{::boilerplate bcp14-tagged}
+
+
+# Implementation Status {#sec-implementation}
+{: removeInRFC="true"}
+
+
+# Operational Considerations {#sec-ops}
+
+
+# Security Considerations {#sec-security}
+
+
+# IANA Considerations {#sec-iana}
+
+
+--- back
+
+<!-- # Title of Appendix A -->
+
+
+# Acknowledgements
+{: numbered="false"}
