@@ -9,7 +9,6 @@ SRCFILE = draft.md
 
 DISTDIR = dist
 PREVDIR = previous_version
-SNAPDIR = snapshots
 
 PREVPATH = $(DISTDIR)/$(PREVDIR)
 
