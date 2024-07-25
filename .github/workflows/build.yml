@@ -31,7 +31,6 @@ jobs:
       - name: Save generated draft
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages
           path: |
             dist/draft-*.html
             dist/draft-*.txt
