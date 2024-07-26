@@ -38,8 +38,7 @@ $(PREVPATH):
 	@$(MKDIR) $@
 
 $(DISTDIR)/$(XMLFILE): $(SRCFILE) $(DISTDIR)
-	@$(KDRFC) $< > $@.tmp
-	@mv $@.tmp $@
+	@$(KDRFC) $< > $@
 
 $(DISTDIR)/$(TXTFILE): $(DISTDIR)/$(XMLFILE)
 	@$(XML2RFC) --text $<
