@@ -2,7 +2,6 @@
 
 To-Do list:
 
-- [ ] Replace rfcdiff with [iddiff](https://github.com/ietf-tools/iddiff)
 - [ ] Consider adding [idnits](https://github.com/ietf-tools/idnits) check
 - [ ] Consider adding [rfclint](https://github.com/ietf-tools/rfclint) check
 

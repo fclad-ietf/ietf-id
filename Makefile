@@ -1,6 +1,6 @@
 KDRFC   = kramdown-rfc2629
 XML2RFC = xml2rfc --v3
-RFCDIFF = rfcdiff
+IDDIFF  = iddiff
 MKDIR   = mkdir -p
 CURL    = curl
 RM      = rm -f
@@ -8,24 +8,26 @@ RM      = rm -f
 SRCFILE = draft.md
 
 DISTDIR = dist
-PREVDIR = previous_version
-
-PREVPATH = $(DISTDIR)/$(PREVDIR)
+PREVDIR = $(DISTDIR)/previous_version
 
 DOCNAME = $(shell grep "^docname:" $(SRCFILE) | sed 's/docname:[[:space:]]\([a-z0-9-]\{1,\}\).*/\1/')
 REPLACES=
 
 VERNUM  = $(lastword $(subst -, ,$(DOCNAME)))
 ifeq ($(VERNUM), 00)
-	PREVVER = $(REPLACES)
+	PREVNAME = $(REPLACES)
+	DIFFNAME = $(DOCNAME)-from-$(REPLACES)
 else
-	PREVVER = $(shell d=$(DOCNAME); v=$(VERNUM); echo $${d%-*}-`printf "%02d" "$$(($${v##0}-1))"`)
+	PREVNUM = $(shell v=$(VERNUM); echo `printf "%02d" "$$(($${v##0}-1))"`)
+	PREVNAME= $(shell d=$(DOCNAME); echo $${d%-*})-$(PREVNUM)
+	DIFFNAME= $(DOCNAME)-from-$(PREVNUM)
 endif
 
-XMLFILE = $(DOCNAME).xml
-TXTFILE = $(DOCNAME).txt
-HTMLFILE= $(DOCNAME).html
-PREVFILE= $(PREVVER).txt
+XMLFILE = $(DISTDIR)/$(DOCNAME).xml
+TXTFILE = $(DISTDIR)/$(DOCNAME).txt
+HTMLFILE= $(DISTDIR)/$(DOCNAME).html
+PREVFILE= $(PREVDIR)/$(PREVNAME).txt
+DIFFFILE= $(DISTDIR)/$(DIFFNAME).html
 
 .PHONY: all xml txt html diff tag bump git-isclean git-ismaster clean cleanall
 
@@ -34,32 +36,35 @@ all: txt
 $(DISTDIR):
 	@$(MKDIR) $@
 
-$(PREVPATH):
+$(PREVDIR):
 	@$(MKDIR) $@
 
-$(DISTDIR)/$(XMLFILE): $(SRCFILE) $(DISTDIR)
+$(XMLFILE): $(SRCFILE) $(DISTDIR)
 	@$(KDRFC) $< > $@
 
-$(DISTDIR)/$(TXTFILE): $(DISTDIR)/$(XMLFILE)
+$(TXTFILE): $(XMLFILE)
 	@$(XML2RFC) --text $<
 
-$(DISTDIR)/$(HTMLFILE): $(DISTDIR)/$(XMLFILE)
+$(HTMLFILE): $(XMLFILE)
 	@$(XML2RFC) --html $<
 
-$(PREVPATH)/$(PREVFILE): $(PREVPATH)
-ifeq ($(PREVVER),)
+$(PREVFILE): $(PREVDIR)
+ifeq ($(PREVNAME),)
 	$(error Cannot find previous version)
 endif
-	$(CURL) https://www.ietf.org/archive/id/$(PREVVER).txt --output $@
+	@$(CURL) https://www.ietf.org/archive/id/$(PREVNAME).txt --output $@
 
-xml: $(DISTDIR)/$(XMLFILE)
+$(DIFFFILE): $(PREVFILE) $(TXTFILE)
+	@$(IDDIFF) $^ > $@
+	@echo " Created diff file $@"
 
-txt: $(DISTDIR)/$(TXTFILE)
+xml: $(XMLFILE)
 
-html: $(DISTDIR)/$(HTMLFILE)
+txt: $(TXTFILE)
 
-diff: $(PREVPATH)/$(PREVFILE) $(DISTDIR)/$(TXTFILE)
-	cd $(DISTDIR); $(RFCDIFF) $(PREVDIR)/$(PREVFILE) $(TXTFILE)
+html: $(HTMLFILE)
+
+diff: $(DIFFFILE)
 
 tag: git-ismaster git-isclean
 	@git tag -a $(DOCNAME) -m "Submitted WG-Document $(DOCNAME)"
@@ -92,5 +97,5 @@ clean:
 	@$(RM) $(DISTDIR)/*.txt $(DISTDIR)/*.html $(DISTDIR)/*.xml
 
 cleanall: clean
-	@$(RM) $(PREVPATH)/$(PREVFILE)
-	@rmdir $(PREVPATH) $(DISTDIR)
+	@$(RM) $(PREVFILE)
+	@rmdir $(PREVDIR) $(DISTDIR)
