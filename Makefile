@@ -1,6 +1,7 @@
 KDRFC   = kramdown-rfc2629
 XML2RFC = xml2rfc --v3
 IDDIFF  = iddiff
+IDNITS  = idnits
 MKDIR   = mkdir -p
 CURL    = curl
 RM      = rm -f
@@ -29,7 +30,7 @@ HTMLFILE= $(DISTDIR)/$(DOCNAME).html
 PREVFILE= $(PREVDIR)/$(PREVNAME).txt
 DIFFFILE= $(DISTDIR)/$(DIFFNAME).html
 
-.PHONY: all xml txt html diff tag bump git-isclean git-ismaster clean cleanall
+.PHONY: all xml txt html diff idnits tag bump git-isclean git-ismaster clean cleanall
 
 all: txt
 
@@ -65,6 +66,9 @@ txt: $(TXTFILE)
 html: $(HTMLFILE)
 
 diff: $(DIFFFILE)
+
+idnits: $(XMLFILE)
+	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
 	@git tag -a $(DOCNAME) -m "Submitted WG-Document $(DOCNAME)"
