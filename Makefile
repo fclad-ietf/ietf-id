@@ -1,4 +1,4 @@
-KDRFC   = kramdown-rfc2629
+KDRFC   = kramdown-rfc
 XML2RFC = xml2rfc --v3
 IDDIFF  = iddiff
 IDNITS  = idnits
