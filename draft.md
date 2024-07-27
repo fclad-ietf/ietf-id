@@ -33,13 +33,13 @@ informative: # add informative references below
 
 --- abstract
 
-Lorem ipsum...
+To be done.
 
 --- middle
 
 # Introduction
 
-Lorem ipsum...
+To be done.
 
 ## Requirements Language
 
@@ -49,14 +49,22 @@ Lorem ipsum...
 # Implementation Status {#sec-implementation}
 {: removeInRFC="true"}
 
+To be done.
+
 
 # Operational Considerations {#sec-ops}
+
+To be done.
 
 
 # Security Considerations {#sec-security}
 
+To be done.
+
 
 # IANA Considerations {#sec-iana}
+
+To be done.
 
 
 --- back
