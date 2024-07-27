@@ -1,9 +1,5 @@
 # IETF Internet-Draft
 
-To-Do list:
-
-- [ ] Consider adding [rfclint](https://github.com/ietf-tools/rfclint) check
-
 ## Usage
 
 [draft.md](draft.md) contains the source content of the Internet-Draft (ID) in [kramdown-rfc](https://github.com/cabo/kramdown-rfc) Markdown format. All other ID formats (XML, plain text, and HTML) are generated from this Markdown source.
