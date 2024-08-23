@@ -3,7 +3,7 @@
 
   // Image, Dockerfile, or Docker Compose file.
   // More info: https://containers.dev/guide/dockerfile.
-  "image": "ghcr.io/fclad-ietf/ietf-id-devcontainer:latest"
+  "image": "ghcr.io/fclad-ietf/ietf-id-devcontainer:latest",
 
   // Features to add to the dev container.
   // More info: https://containers.dev/features.
@@ -15,6 +15,11 @@
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "uname -a",
+
+  // Propagate host Git configuration with 'include' statements to devcontainer
+  // (see https://github.com/microsoft/vscode-remote-release/issues/2084)
+  "initializeCommand": "git config -l --global --include > .gitconfig.global",
+  "postAttachCommand": "/bin/bash .devcontainer/post-attach.sh"
 
   // Configure tool-specific properties.
   // "customizations": {},
