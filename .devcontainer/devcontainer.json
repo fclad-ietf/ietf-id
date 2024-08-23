@@ -18,7 +18,7 @@
 
   // Propagate host Git configuration with 'include' statements to devcontainer
   // (see https://github.com/microsoft/vscode-remote-release/issues/2084)
-  "initializeCommand": "git config -l --global --include > .gitconfig.global",
+  "initializeCommand": "git config -l --global --include > .gitconfig.global || echo \"\" > .gitconfig.global",
   "postAttachCommand": "/bin/bash .devcontainer/post-attach.sh"
 
   // Configure tool-specific properties.
