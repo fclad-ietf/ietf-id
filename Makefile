@@ -12,13 +12,13 @@ DISTDIR = dist
 PREVDIR = $(DISTDIR)/previous_version
 
 DOCNAME = $(shell grep "^docname:" $(SRCFILE) | sed 's/docname:[[:space:]]\([a-z0-9-]\{1,\}\).*/\1/')
-REPLACES=
+REPLACES ?=
 
 VERNUM  = $(lastword $(subst -, ,$(DOCNAME)))
-ifeq ($(VERNUM), 00)
+ifneq ($(REPLACES),)
 	PREVNAME = $(REPLACES)
 	DIFFNAME = $(DOCNAME)-from-$(REPLACES)
-else
+else ifneq ($(VERNUM), 00)
 	PREVNUM = $(shell v=$(VERNUM); echo `printf "%02d" "$$(($${v##0}-1))"`)
 	PREVNAME= $(shell d=$(DOCNAME); echo $${d%-*})-$(PREVNUM)
 	DIFFNAME= $(DOCNAME)-from-$(PREVNUM)
