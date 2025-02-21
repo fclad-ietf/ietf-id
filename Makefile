@@ -42,6 +42,7 @@ $(PREVDIR):
 
 $(XMLFILE): $(SRCFILE) $(DISTDIR)
 	@$(KDRFC) $< > $@
+	@echo "Remember to run `make tag` after submitting this I-D. to the datatracker."
 
 $(TXTFILE): $(XMLFILE)
 	@$(XML2RFC) --text $<
@@ -71,9 +72,18 @@ idnits: $(XMLFILE)
 	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
-	@git tag -a $(DOCNAME) -m "Submitted WG-Document $(DOCNAME)"
-	@echo "Don't forget to push with \"git push --tags\" and clean up with"
-	@echo "\"git branch -d revision-ietf-$(VERNUM); git remote prune origin\""
+	@git tag -a $(DOCNAME) -m "Submitted I-D. $(DOCNAME)"
+	@echo "Tag $(DOCNAME) successfully created."
+	@echo
+	@echo "Don't forget to push it with:"
+	@echo "   git push --tags"
+	@echo
+	@echo "If not done already, you may delete the old revision branch with:"
+	@echo "   git branch -d revision-ietf-$(VERNUM); git remote prune origin"
+	@echo
+	@echo "You may also initialize a new revision with:"
+	@echo "   make bump"
+	@echo
 
 bump: git-ismaster git-isclean
 	$(eval NEXTVERNUM := $(shell v=$(VERNUM); printf "%02d" "$$(($${v##0}+1))"))
@@ -81,7 +91,9 @@ bump: git-ismaster git-isclean
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
 	@git add $(SRCFILE)
 	@git ci -m "Bumped to revision draft-ietf-...-$(NEXTVERNUM)"
-	@echo "Push the new branch with \"git push -u origin revision-ietf-$(NEXTVERNUM)\""
+	@echo "Push the new branch with:"
+	@echo "   git push -u origin revision-ietf-$(NEXTVERNUM)"
+	@echo
 
 git-isclean:
 	@status=$$(git status --porcelain); \
