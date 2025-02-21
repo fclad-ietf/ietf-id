@@ -42,7 +42,7 @@ $(PREVDIR):
 
 $(XMLFILE): $(SRCFILE) $(DISTDIR)
 	@$(KDRFC) $< > $@
-	@echo "Remember to run `make tag` after submitting this I-D. to the datatracker."
+	@echo "Remember to run \"make tag\" after submitting this I-D to the datatracker."
 
 $(TXTFILE): $(XMLFILE)
 	@$(XML2RFC) --text $<
@@ -72,7 +72,7 @@ idnits: $(XMLFILE)
 	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
-	@git tag -a $(DOCNAME) -m "Submitted I-D. $(DOCNAME)"
+	@git tag -a $(DOCNAME) -m "Submitted I-D $(DOCNAME)"
 	@echo "Tag $(DOCNAME) successfully created."
 	@echo
 	@echo "Don't forget to push it with:"
