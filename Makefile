@@ -72,7 +72,7 @@ idnits: $(XMLFILE)
 	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
-	@git tag -a $(DOCNAME) -m "Submitted I-D $(DOCNAME)"
+	@git tag -a $(DOCNAME) -m "Submitted document $(DOCNAME)"
 	@echo "Tag $(DOCNAME) successfully created."
 	@echo
 	@echo "Don't forget to push it with:"
