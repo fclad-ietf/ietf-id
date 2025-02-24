@@ -92,7 +92,7 @@ bump: git-ismaster git-isclean
 	@git checkout -b revision/$(AUTH)-$(NEXTVERNUM)
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
 	@git add $(SRCFILE)
-	@git commit -m "Bumped to revision draft-$(AUTH)-...-$(NEXTVERNUM)"
+	@git commit -m "bump to revision $(AUTH) -$(NEXTVERNUM)"
 	@echo "Push the new branch with:"
 	@echo "   git push -u origin revision/$(AUTH)-$(NEXTVERNUM)"
 	@echo
