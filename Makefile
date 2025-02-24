@@ -14,7 +14,8 @@ PREVDIR = $(DISTDIR)/previous_version
 DOCNAME = $(shell grep "^docname:" $(SRCFILE) | sed 's/docname:[[:space:]]\([a-z0-9-]\{1,\}\).*/\1/')
 REPLACES ?=
 
-VERNUM  = $(lastword $(subst -, ,$(DOCNAME)))
+VERNUM = $(lastword $(subst -, ,$(DOCNAME)))
+
 ifneq ($(REPLACES),)
 	PREVNAME = $(REPLACES)
 	DIFFNAME = $(DOCNAME)-from-$(REPLACES)
