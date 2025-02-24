@@ -14,6 +14,7 @@ PREVDIR = $(DISTDIR)/previous_version
 DOCNAME = $(shell grep "^docname:" $(SRCFILE) | sed 's/docname:[[:space:]]\([a-z0-9-]\{1,\}\).*/\1/')
 REPLACES ?=
 
+AUTH   = $(word 2,$(subst -, ,$(DOCNAME)))
 VERNUM = $(lastword $(subst -, ,$(DOCNAME)))
 
 ifneq ($(REPLACES),)
@@ -80,7 +81,7 @@ tag: git-ismaster git-isclean
 	@echo "   git push --tags"
 	@echo
 	@echo "If not done already, you may delete the old revision branch with:"
-	@echo "   git branch -d revision-ietf-$(VERNUM); git remote prune origin"
+	@echo "   git branch -d revision-$(AUTH)-$(VERNUM); git remote prune origin"
 	@echo
 	@echo "You may also initialize a new revision with:"
 	@echo "   make bump"
@@ -88,12 +89,12 @@ tag: git-ismaster git-isclean
 
 bump: git-ismaster git-isclean
 	$(eval NEXTVERNUM := $(shell v=$(VERNUM); printf "%02d" "$$(($${v##0}+1))"))
-	@git checkout -b revision-ietf-$(NEXTVERNUM)
+	@git checkout -b revision-$(AUTH)-$(NEXTVERNUM)
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
 	@git add $(SRCFILE)
-	@git commit -m "Bumped to revision draft-ietf-...-$(NEXTVERNUM)"
+	@git commit -m "Bumped to revision draft-$(AUTH)-...-$(NEXTVERNUM)"
 	@echo "Push the new branch with:"
-	@echo "   git push -u origin revision-ietf-$(NEXTVERNUM)"
+	@echo "   git push -u origin revision-$(AUTH)-$(NEXTVERNUM)"
 	@echo
 
 git-isclean:
