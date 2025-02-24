@@ -87,10 +87,10 @@ tag: git-ismaster git-isclean
 
 bump: git-ismaster git-isclean
 	$(eval NEXTVERNUM := $(shell v=$(VERNUM); printf "%02d" "$$(($${v##0}+1))"))
-	@git co -b revision-ietf-$(NEXTVERNUM)
+	@git checkout -b revision-ietf-$(NEXTVERNUM)
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
 	@git add $(SRCFILE)
-	@git ci -m "Bumped to revision draft-ietf-...-$(NEXTVERNUM)"
+	@git commit -m "Bumped to revision draft-ietf-...-$(NEXTVERNUM)"
 	@echo "Push the new branch with:"
 	@echo "   git push -u origin revision-ietf-$(NEXTVERNUM)"
 	@echo
