@@ -4,6 +4,7 @@ IDDIFF  = iddiff
 IDNITS  = idnits
 MKDIR   = mkdir -p
 CURL    = curl
+GIT     = git
 RM      = rm -f
 
 SRCFILE = draft.md
@@ -14,7 +15,9 @@ PREVDIR = $(DISTDIR)/previous_version
 DOCNAME = $(shell grep "^docname:" $(SRCFILE) | sed 's/docname:[[:space:]]\([a-z0-9-]\{1,\}\).*/\1/')
 REPLACES ?=
 
-VERNUM  = $(lastword $(subst -, ,$(DOCNAME)))
+AUTH   = $(word 2,$(subst -, ,$(DOCNAME)))
+VERNUM = $(lastword $(subst -, ,$(DOCNAME)))
+
 ifneq ($(REPLACES),)
 	PREVNAME = $(REPLACES)
 	DIFFNAME = $(DOCNAME)-from-$(REPLACES)
@@ -72,14 +75,14 @@ idnits: $(XMLFILE)
 	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
-	@git tag -a $(DOCNAME) -m "Submitted I-D $(DOCNAME)"
+	@$(GIT) tag -a $(DOCNAME) -m "Submitted document $(DOCNAME)"
 	@echo "Tag $(DOCNAME) successfully created."
 	@echo
 	@echo "Don't forget to push it with:"
-	@echo "   git push --tags"
+	@echo "   $(GIT) push --tags"
 	@echo
 	@echo "If not done already, you may delete the old revision branch with:"
-	@echo "   git branch -d revision-ietf-$(VERNUM); git remote prune origin"
+	@echo "   $(GIT) branch -d revision/$(AUTH)-$(VERNUM); $(GIT) remote prune origin"
 	@echo
 	@echo "You may also initialize a new revision with:"
 	@echo "   make bump"
@@ -87,27 +90,25 @@ tag: git-ismaster git-isclean
 
 bump: git-ismaster git-isclean
 	$(eval NEXTVERNUM := $(shell v=$(VERNUM); printf "%02d" "$$(($${v##0}+1))"))
-	@git co -b revision-ietf-$(NEXTVERNUM)
+	@$(GIT) checkout -b revision/$(AUTH)-$(NEXTVERNUM)
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
-	@git add $(SRCFILE)
-	@git ci -m "Bumped to revision draft-ietf-...-$(NEXTVERNUM)"
+	@$(GIT) add $(SRCFILE)
+	@$(GIT) commit -m "bump to revision $(AUTH) -$(NEXTVERNUM)"
 	@echo "Push the new branch with:"
-	@echo "   git push -u origin revision-ietf-$(NEXTVERNUM)"
+	@echo "   $(GIT) push -u origin revision/$(AUTH)-$(NEXTVERNUM)"
 	@echo
 
 git-isclean:
-	@status=$$(git status --porcelain); \
-	if [ ! -z "$${status}" ]; then \
-		echo "Error - working directory is dirty."; \
-		exit 1; \
-	fi
+	$(eval GITSTATUS := $(shell $(GIT) status --porcelain --untracked-files=no))
+ifneq ($(GITSTATUS),)
+	$(error Working directory is dirty)
+endif
 
 git-ismaster:
-	@branch=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "master" != "$${branch}" ]; then \
-		echo "Error - not on master."; \
-		exit 1; \
-	fi
+	$(eval GITBRANCH := $(shell $(GIT) rev-parse --abbrev-ref HEAD))
+ifneq ($(GITBRANCH),master)
+	$(error Not on master branch)
+endif
 
 clean:
 	@$(RM) $(DISTDIR)/*.txt $(DISTDIR)/*.html $(DISTDIR)/*.xml
