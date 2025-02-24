@@ -98,18 +98,16 @@ bump: git-ismaster git-isclean
 	@echo
 
 git-isclean:
-	@status=$$(git status --porcelain --untracked-files=no); \
-	if [ ! -z "$${status}" ]; then \
-		echo "Error - working directory is dirty."; \
-		exit 1; \
-	fi
+	$(eval GITSTATUS := $(shell git status --porcelain --untracked-files=no))
+ifneq ($(GITSTATUS),)
+	$(error Working directory is dirty)
+endif
 
 git-ismaster:
-	@branch=$$(git rev-parse --abbrev-ref HEAD); \
-	if [ "master" != "$${branch}" ]; then \
-		echo "Error - not on master."; \
-		exit 1; \
-	fi
+	$(eval GITBRANCH := $(shell git rev-parse --abbrev-ref HEAD))
+ifneq ($(GITBRANCH),master)
+	$(error Not on master branch)
+endif
 
 clean:
 	@$(RM) $(DISTDIR)/*.txt $(DISTDIR)/*.html $(DISTDIR)/*.xml
