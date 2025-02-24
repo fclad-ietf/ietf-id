@@ -96,7 +96,7 @@ bump: git-ismaster git-isclean
 	@echo
 
 git-isclean:
-	@status=$$(git status --porcelain); \
+	@status=$$(git status --porcelain --untracked-files=no); \
 	if [ ! -z "$${status}" ]; then \
 		echo "Error - working directory is dirty."; \
 		exit 1; \
