@@ -4,6 +4,7 @@ IDDIFF  = iddiff
 IDNITS  = idnits
 MKDIR   = mkdir -p
 CURL    = curl
+GIT     = git
 RM      = rm -f
 
 SRCFILE = draft.md
@@ -74,14 +75,14 @@ idnits: $(XMLFILE)
 	@$(IDNITS) $<
 
 tag: git-ismaster git-isclean
-	@git tag -a $(DOCNAME) -m "Submitted document $(DOCNAME)"
+	@$(GIT) tag -a $(DOCNAME) -m "Submitted document $(DOCNAME)"
 	@echo "Tag $(DOCNAME) successfully created."
 	@echo
 	@echo "Don't forget to push it with:"
-	@echo "   git push --tags"
+	@echo "   $(GIT) push --tags"
 	@echo
 	@echo "If not done already, you may delete the old revision branch with:"
-	@echo "   git branch -d revision/$(AUTH)-$(VERNUM); git remote prune origin"
+	@echo "   $(GIT) branch -d revision/$(AUTH)-$(VERNUM); $(GIT) remote prune origin"
 	@echo
 	@echo "You may also initialize a new revision with:"
 	@echo "   make bump"
@@ -89,22 +90,22 @@ tag: git-ismaster git-isclean
 
 bump: git-ismaster git-isclean
 	$(eval NEXTVERNUM := $(shell v=$(VERNUM); printf "%02d" "$$(($${v##0}+1))"))
-	@git checkout -b revision/$(AUTH)-$(NEXTVERNUM)
+	@$(GIT) checkout -b revision/$(AUTH)-$(NEXTVERNUM)
 	@sed -i 's/^\(docname:[[:space:]][a-z0-9-]\{1,\}-\)[0-9]\{1,\}/\1$(NEXTVERNUM)/' $(SRCFILE)
-	@git add $(SRCFILE)
-	@git commit -m "bump to revision $(AUTH) -$(NEXTVERNUM)"
+	@$(GIT) add $(SRCFILE)
+	@$(GIT) commit -m "bump to revision $(AUTH) -$(NEXTVERNUM)"
 	@echo "Push the new branch with:"
-	@echo "   git push -u origin revision/$(AUTH)-$(NEXTVERNUM)"
+	@echo "   $(GIT) push -u origin revision/$(AUTH)-$(NEXTVERNUM)"
 	@echo
 
 git-isclean:
-	$(eval GITSTATUS := $(shell git status --porcelain --untracked-files=no))
+	$(eval GITSTATUS := $(shell $(GIT) status --porcelain --untracked-files=no))
 ifneq ($(GITSTATUS),)
 	$(error Working directory is dirty)
 endif
 
 git-ismaster:
-	$(eval GITBRANCH := $(shell git rev-parse --abbrev-ref HEAD))
+	$(eval GITBRANCH := $(shell $(GIT) rev-parse --abbrev-ref HEAD))
 ifneq ($(GITBRANCH),master)
 	$(error Not on master branch)
 endif
